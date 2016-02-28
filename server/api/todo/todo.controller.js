@@ -28,6 +28,30 @@ exports.index = function (req, res) {
   })
 }
 
+exports.create = function (req, res) {
+  var listId = req.body.listId;
+  var todo = new Todo({
+    name: req.body.name,
+    _list: listId
+  })
+  todo.save(function (error, todo) {
+    if (error) {
+      errorHandler.handle(res, error, 404);
+    } else if (todo) {
+      List.findOne({ _id: listId}, function (error, list) {
+        if (error) {
+          errorHandler.handle(res, error, 404);
+        } else if (list) {
+          var id = mongoose.Types.ObjectId(todo._id);
+          list.todos.push(id)
+          list.save()
+          res.json(todo)
+        }
+      })
+    }
+  })
+}
+
 exports.edit = function (req, res) {
   var listId = req.body.listId;
   var todo = { _id: req.params.todoId};
