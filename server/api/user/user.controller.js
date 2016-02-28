@@ -17,12 +17,14 @@ exports.create = function (req, res) {
 };
 
 exports.getMe = function (req, res) {
-  var userId = req.user._id;
-  User.findOne({
-    _id: userId
-  }, '-salt -passwordHash', function (err, user) {
-    if (err) { return handleError(res, err); }
-    if (!user) { return res.json(401); }
-    res.status(200).json(user);
-  });
+  User.findById({_id: req.user._id})
+    .populate('_boards')
+    .exec(function (error, user) {
+      if (error) {
+        errorHandler.handle(res, error, 500);
+      } else if (!user) {
+        return res.json(401);
+      }
+      res.status(200).json(user);
+    });
 };

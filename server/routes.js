@@ -6,6 +6,9 @@ module.exports = function (app) {
 
   // API
   app.use('/api/users', require('./api/user'));
+  app.use('/api/boards', require('./api/board'));
+  app.use('/api/lists', require('./api/list'));
+  app.use('/api/todos', require('./api/todo'));
 
   // Auth
   app.use('/auth', require('./auth'));

@@ -8,54 +8,59 @@ var List = require('../list/list.model');
 var Todo = require('../todo/todo.model');
 var errorHandler = require('../../error/error.handling');
 
-exports.showBoards = function (req, res) {
+exports.showLists = function (req, res) {
   var loggedUserId = req.user._id;
+  var boardId = req.query.boardId;
   User.findOne({ _id: loggedUserId})
-    .populate('_boards')
     .exec(function (error, foundUser) {
       if (error) {
         errorHandler.handle(res, error, 404);
       } else if (foundUser) {
-        res.json(foundUser._boards);
+        List.find({ _board: boardId})
+        .populate('todos')
+        .exec(function (error, lists) {
+          if (error) {
+            errorHandler.handle(res, error, 404);
+          } else if (lists) {
+            res.json(lists)
+          }
+        })
       }
     });
 }
 
 exports.create = function (req, res) {
-  var owner = req.user._id;
-  var board = new Board ({
+  var boardId = req.body.boardId;
+  var list = new List ({
     name: req.body.name,
     description: req.body.description,
-    _owner: owner
+    _board: boardId
   });
 
-  board.save(function (error, data) {
-    if (data) {
-      User.findOne({_id: owner}, function (error, owner) {
-        if (error) {
-          errorHandler.handle(res, error, 404);
-        } else {
-          var id = mongoose.Types.ObjectId(owner._id);
-          owner._boards.push(data._id);
-          owner.save();
-          res.json(data);
-        }
-      });
-    } else if (error) {
+  list.save(function (error, list) {
+    if (error) {
       errorHandler.handle(res, error, 500);
+    } else if (list) {
+      res.json(list)
     }
-  });
+  })
 }
 
 exports.edit = function (req, res) {
-  var board = { _id: req.params.boardId};
-  Board.update(board, {name: req.body.name}, {description: req.body.description}, function (error, board) {
+  var list = { _id: req.params.listId};
+  List.update(list, {name: req.body.name}, {description: req.body.description}, function (error, list) {
     if (error) {
       errorHandler.handle(res, error, 404);
-    } else if (board) {
-        res.json(board)
+    } else if (list) {
+      List.find({}, function (error, lists) {
+        if (error) {
+          errorHandler.handle(res, error, 404);
+        } else if (lists) {
+          res.json(lists)
+        }
+      })
     }
-  })
+  }
 }
 
 exports.delete = function (req, res) {
@@ -64,19 +69,12 @@ exports.delete = function (req, res) {
     if (error) {
       errorHandler.handle(res, error, 404);
     } else if (todo) {
-      var list = new List ({ _board: req.params.boardId})
+      var list = new List ({ _id: req.params.listId})
       list.remove(function (error, list) {
         if (error) {
           errorHandler.handle(res, error, 404);
         } else if (list) {
-          var board = new Board ({ _id: req.params.boardId})
-          board.remove(function (error, board) {
-            if (error) {
-              errorHandler.handle(res, error, 404);
-            } else if (board) {
-              res.json(board)
-            }
-          })
+          res.json(list)
         }
       })
     }

@@ -10,6 +10,6 @@ var boardSchema = new Schema({
   _owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }
 })
 
-var Board = mongoose.model('Board', groupSchema);
+var Board = mongoose.model('Board', boardSchema);
 
-module.exports = mongoose.model('Board', groupSchema);
+module.exports = mongoose.model('Board', boardSchema);
