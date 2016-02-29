@@ -1,6 +1,6 @@
 'use strict';
 
-andgular.module('geterDone')
+angular.module('geterDone')
   .service('TodoService', function ($rootScope, $q, $http) {
     var service = {};
 

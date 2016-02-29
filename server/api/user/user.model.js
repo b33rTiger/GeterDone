@@ -8,8 +8,8 @@ var UserSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   passwordHash: { type: String, select: false },
-  salt: { type: String, select: false }
-  _boards: [{ type: Schema.Types.ObjectId, ref: 'board' }],
+  salt: { type: String, select: false },
+  _boards: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Board' }],
   pass_reset: String
 });
 

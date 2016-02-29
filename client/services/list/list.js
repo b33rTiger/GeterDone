@@ -1,6 +1,6 @@
 'use strict';
 
-andgular.module('geterDone')
+angular.module('geterDone')
   .service('ListService', function ($rootScope, $q, $http) {
     var service = {};
 

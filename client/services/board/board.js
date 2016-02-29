@@ -1,6 +1,6 @@
 'use strict';
 
-andgular.module('geterDone')
+angular.module('geterDone')
   .service('BoardService', function ($rootScope, $q, $http) {
     var service = {};
 
