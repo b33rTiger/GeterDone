@@ -5,8 +5,7 @@ angular.module('geterDone', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngAnimate',
-  'btford.socket-io'
+  'ngAnimate'
 ])
   .config(function ($routeProvider, $locationProvider, $httpProvider) {
 

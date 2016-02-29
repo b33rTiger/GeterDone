@@ -13,7 +13,6 @@
     "expect": false,
     "alert": false,
     "afterEach": false,
-    "beforeEach": false,
-    "io" : false
+    "beforeEach": false
   }
 }
