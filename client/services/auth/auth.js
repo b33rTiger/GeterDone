@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('geterDone')
-  .service('Auth', function ($rootScope, $cookieStore, $q, $http) {
+  .service('Auth', function ($rootScope, $cookieStore, $q, $http, $location) {
 
     var _user = {};
     var _ready = $q.defer();
@@ -18,12 +18,6 @@ angular.module('geterDone')
       _ready.resolve();
     }
 
-    /**
-     * Signup
-     *
-     * @param user
-     * @returns {promise}
-     */
     this.signup = function (user) {
       var deferred = $q.defer();
       $http.post('/api/users', user)
@@ -38,12 +32,6 @@ angular.module('geterDone')
       return deferred.promise;
     };
 
-    /**
-     * Login
-     *
-     * @param user
-     * @returns {promise}
-     */
     this.login = function (user) {
       var deferred = $q.defer();
       $http.post('/auth/local', user)
@@ -58,28 +46,15 @@ angular.module('geterDone')
       return deferred.promise;
     };
 
-    /**
-     * Logout
-     */
     this.logout = function () {
       $cookieStore.remove('token');
       _user = {};
     };
 
-    /**
-     * Check if the user is logged
-     *
-     * @returns {boolean}
-     */
     this.isLogged = function () {
       return _user.hasOwnProperty('_id');
     };
 
-    /**
-     * Check if the user is logged after the ready state
-     *
-     * @returns {Promise}
-     */
     this.isReadyLogged = function () {
       var def = $q.defer();
       _ready.promise.then(function () {
@@ -92,13 +67,25 @@ angular.module('geterDone')
       return def.promise;
     };
 
-    /**
-     * Returns the user
-     *
-     * @returns {object}
-     */
     this.getUser = function () {
       return _user;
+    };
+
+    this.getUserNow = function () {
+      var deferred = $q.defer();
+
+      if($cookieStore.get('token')) {
+        $http.get('/api/users/me')
+          .success(function (res) {
+            deferred.resolve(res);
+          })
+          .error(function (error) {
+            deferred.reject('Error: ', error);
+          });
+      }else{
+        deferred.resolve(_user);
+      }
+      return deferred.promise;
     };
 
   });
