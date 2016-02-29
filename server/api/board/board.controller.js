@@ -59,7 +59,7 @@ exports.edit = function (req, res) {
 }
 
 exports.delete = function (req, res) {
-  var todo = new Todo { _list: req.params.listId};
+  var todo = new Todo ({ _list: req.params.listId});
   todo.remove(function (error, todo) {
     if (error) {
       errorHandler.handle(res, error, 404);
