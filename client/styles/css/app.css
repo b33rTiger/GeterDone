@@ -1,2 +1,17 @@
 body {
   font-family: sans-serif; }
+
+.landingpage {
+  text-align: center; }
+
+.pageforms {
+  margin: auto;
+  width: 500px;
+  width: 33%; }
+
+.pageforms > p > a {
+  text-decoration: underline;
+  font-style: italic; }
+
+.form-control {
+  margin-bottom: 1em; }
