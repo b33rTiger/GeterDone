@@ -2,9 +2,9 @@
 
 var _ = require('lodash');
 var mongoose = require('mongoose');
-var Board = require('./board.model');
+var Board = require('../board/board.model');
 var User = require('../user/user.model');
-var List = require('../list/list.model');
+var List = require('./list.model');
 var Todo = require('../todo/todo.model');
 var errorHandler = require('../../error/error.handling');
 
@@ -60,11 +60,11 @@ exports.edit = function (req, res) {
         }
       })
     }
-  }
+  })
 }
 
 exports.delete = function (req, res) {
-  var todo = new Todo { _list: req.params.listId};
+  var todo = new Todo ({ _list: req.params.listId});
   todo.remove(function (error, todo) {
     if (error) {
       errorHandler.handle(res, error, 404);

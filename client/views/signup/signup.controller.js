@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('geterDone')
-  .controller('SignupCtrl', function ($location, Auth) {
+  .controller('SignupCtrl', ['$location', 'Auth', 'ErrorService', function ($location, Auth, ErrorService) {
 
     var vm = this;
 
@@ -9,24 +9,17 @@ angular.module('geterDone')
 
       name: 'SignupCtrl',
 
-      /**
-       * User credentials
-       */
-      user: { email: 'test@test.com', password: 'test' },
-
-      /**
-       * Signup
-       */
       signup: function () {
         Auth.signup(vm.user)
           .then(function () {
-            $location.path('/');
+            $location.path('/board');
           })
           .catch(function (err) {
-            vm.error = err;
+            $location.path('/signup');
+            ErrorService.errorToasty(err);
           });
       }
 
     });
 
-  });
+  }]);

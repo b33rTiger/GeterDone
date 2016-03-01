@@ -42,8 +42,7 @@ module.exports = function (config) {
     ]),
 
     exclude: [
-      'views/**/*.e2e.js',
-      'services/socket/socket.service.js'
+      'views/**/*.e2e.js'
     ],
 
     reporters: ['progress'],

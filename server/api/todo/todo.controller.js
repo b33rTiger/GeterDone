@@ -6,7 +6,7 @@ var mongoose = require('mongoose');
 var Todo = require('./todo.model');
 var List = require('../list/list.model');
 
-var errorHandler = require('../../error/error-handling');
+var errorHandler = require('../../error/error.handling');
 
 exports.index = function (req, res) {
   var loggedUserId = req.user._id;
@@ -67,11 +67,11 @@ exports.edit = function (req, res) {
         }
       })
     }
-  }
+  })
 }
 
 exports.delete = function (req, res) {
-  var todo = new Todo { _list: req.params.listId};
+  var todo = new Todo ({ _list: req.params.listId});
   todo.remove(function (error, todo) {
     if (error) {
       errorHandler.handle(res, error, 404);

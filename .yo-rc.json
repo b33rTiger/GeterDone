@@ -16,7 +16,7 @@
       "mocha": true,
       "e2e": true,
       "hasTests": true,
-      "sockets": true,
+      "sockets": false,
       "auth": true
     }
   }
